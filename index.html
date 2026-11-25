@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f8f2">
+  <title>TindaWise • Lily's Store</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="top">
+    <div class="container nav">
+      <a class="brand" href="#view-shop" id="brandLink">
+        <span class="brandmark" aria-hidden="true">✿</span>
+        <span><strong>TindaWise</strong><small>Lily’s Store</small></span>
+      </a>
+      <nav class="links" aria-label="Main navigation">
+        <button type="button" class="navitem" data-view="shop" aria-controls="view-shop" aria-current="page">Shop assistant</button>
+        <button type="button" class="navitem" data-view="catalog" aria-controls="view-catalog">Product catalog</button>
+        <button type="button" class="navitem" data-view="owner" aria-controls="view-owner">Owner tools</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container" tabindex="-1">
+    <section id="view-shop" class="view" aria-labelledby="shopHeading">
+      <header class="hero">
+        <div class="hero-copy">
+          <h1 id="shopHeading" tabindex="-1">Shop within your budget</h1>
+          <p>Find products at Lily’s Store in English, Filipino, or Taglish.</p>
+        </div>
+        <div class="hero-media" aria-hidden="true">
+          <img src="assets/shop-basket.webp" alt="" width="959" height="540">
+        </div>
+      </header>
+
+      <div class="layout">
+        <form id="shopForm" class="panel formpanel">
+          <label class="request-label" for="request">What are you looking for?</label>
+          <textarea id="request" rows="3" placeholder="e.g. Malamig at matamis na merienda" required></textarea>
+          <div class="examples" aria-label="Example requests">
+            <button type="button" class="example" data-prompt="Something sweet and cold"><span aria-hidden="true">🍦</span> Cold &amp; sweet</button>
+            <button type="button" class="example" data-prompt="I need ingredients for burgers and sandwiches"><span aria-hidden="true">🍔</span> Burgers</button>
+            <button type="button" class="example" data-prompt="Affordable canned food and rice for dinner"><span aria-hidden="true">🍚</span> Dinner</button>
+          </div>
+          <label for="budget">Maximum budget</label>
+          <div class="money-input">
+            <span aria-hidden="true">₱</span>
+            <input id="budget" type="number" min="0.01" step="0.01" value="150" inputmode="decimal" aria-describedby="budgetHelp" required>
+          </div>
+          <p id="budgetHelp" class="micro">This amount sets the maximum basket total in pesos.</p>
+          <label class="check">
+            <input id="previewSRP" type="checkbox" checked>
+            <span>Include poster price estimates<small>Use suggested retail prices when a store price is unavailable.</small></span>
+          </label>
+          <button id="suggestButton" class="primary" type="submit"><span id="suggestLabel">Find matches</span><span aria-hidden="true">→</span></button>
+          <p id="aiStatus" class="status" role="status">AI loads on the first search</p>
+        </form>
+
+        <section id="resultPanel" class="panel resultpanel" aria-labelledby="resultTitle">
+          <header class="resulttop">
+            <div>
+              <h2 id="resultTitle" tabindex="-1">Your matches</h2>
+              <p id="resultContext" class="result-context" hidden></p>
+            </div>
+            <span class="smallpill" id="resultMode" hidden></span>
+          </header>
+          <a id="editSearch" class="edit-search" href="#request" hidden>Back to search ↑</a>
+          <p id="resultAnnouncement" class="sr-only" role="status"></p>
+          <div id="results" class="initial-results">
+            <div class="empty">
+              <span class="emptyicon" aria-hidden="true">🧺</span>
+              <p>Your basket and other matching products will appear here.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+      <p class="price-note">Confirm estimated prices and availability with Lily’s Store before buying.</p>
+    </section>
+
+    <section id="view-catalog" class="view" aria-labelledby="catalogHeading" hidden>
+      <header class="section-head">
+        <div><h1 id="catalogHeading" tabindex="-1">Product catalog</h1><p>Browse products from Lily’s Store and their listed prices.</p></div>
+        <p class="count" id="catalogCount" role="status"></p>
+      </header>
+      <div class="panel toolbar catalog-toolbar">
+        <div class="field"><label for="catalogSearch">Search products</label><input type="search" id="catalogSearch" placeholder="Name, brand, or flavor"></div>
+        <div class="field"><label for="categoryFilter">Category</label><select id="categoryFilter"><option value="">All categories</option></select></div>
+        <div class="field"><label for="priceFilter">Price availability</label><select id="priceFilter"><option value="">All products</option><option value="priced">With a displayed price</option><option value="unpriced">Without a displayed price</option></select></div>
+        <label class="check catalog-preview"><input id="catalogPreviewSRP" type="checkbox" checked><span>Include poster price estimates</span></label>
+      </div>
+      <div class="catalog-grid" id="catalogGrid"></div>
+    </section>
+
+    <section id="view-owner" class="view" aria-labelledby="ownerHeading" hidden>
+      <header class="section-head">
+        <div><h1 id="ownerHeading" tabindex="-1">Owner tools</h1><p>Update prices in this browser. Export a JSON file to transfer them to another device.</p></div>
+        <p class="count" id="verifiedCount" role="status"></p>
+      </header>
+      <div class="panel toolbar ownerbar">
+        <div class="field"><label for="ownerSearch">Find a product</label><input type="search" id="ownerSearch" placeholder="Name, brand, or product ID"></div>
+        <div class="owner-actions">
+          <button id="exportJson" type="button" class="secondary">Export JSON</button>
+          <button id="openImport" type="button" class="secondary">Import JSON</button>
+          <input id="importJson" type="file" accept=".json,application/json" hidden>
+          <button id="resetPrices" type="button" class="secondary danger">Reset local edits</button>
+        </div>
+      </div>
+      <div class="owner-guide">
+        <p>Enter a selling-unit price. Mark it verified after the store confirms the price and unit.</p>
+        <p id="ownerCount" class="owner-count" role="status"></p>
+      </div>
+      <div class="owner-table-wrap" id="ownerTable">
+        <table class="owner-table" role="table">
+          <caption class="sr-only">Store prices by product</caption>
+          <thead role="rowgroup"><tr role="row">
+            <th scope="col" role="columnheader">Product</th><th scope="col" role="columnheader">Poster SRP</th><th scope="col" role="columnheader">Store price (₱)</th><th scope="col" role="columnheader">Verified</th><th scope="col" role="columnheader" class="action-heading"><span class="sr-only">Actions</span></th>
+          </tr></thead>
+          <tbody id="ownerRows" role="rowgroup"></tbody>
+        </table>
+      </div>
+      <p id="ownerEmpty" class="panel empty owner-empty" hidden>No products match your search.</p>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="container foot-inner"><span>TindaWise for Lily’s Store</span><span>PTF50 student prototype</span></div></footer>
+  <div class="toast" role="status" id="toast"></div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
